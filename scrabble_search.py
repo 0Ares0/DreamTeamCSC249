@@ -63,6 +63,22 @@ class ScrabbleSearch(object):
 
         return False
 
+# Generating the permutations of the given random letters
+    def generate_permutations(self, letters):
+        perm_set = set()
+        for i in range(1, len(letters) + 1):
+            perm_set.update([''.join(p) for p in permutations(letters, i)])
+        return perm_set
+
+    # Finding words that can be made from gotten letters
+    def find_valid_words(self, jumbled_letters):
+        valid_words = []
+        permutations = self.generate_permutations(jumbled_letters)
+        for word in permutations:
+            if self.binary_search(word):
+                valid_words.append(word)
+        return valid_words
+
 
 def main():
 
@@ -77,6 +93,14 @@ def main():
             print(f'{user_word} is in the dictionary.')
         else:
             print(f'{user_word} is not in the dictionary.')
+        elif choice == '2':
+            jumbled_letters = input('Enter jumbled letters: ')
+            valid_words = search1.find_valid_words(jumbled_letters)
+            if valid_words:
+                print(f'Valid words: {", ".join(valid_words)}')
+            else:
+                print('No valid words found.')
+                
         selection = input('Do you wish to search again? (Y/N): ').upper()
 
     print('Finished.')
